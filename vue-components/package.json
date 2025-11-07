@@ -1,0 +1,51 @@
+{
+  "name": "vue-trame_color_opacity",
+  "private": true,
+  "version": "0.0.0",
+  "main": "./dist/trame_color_opacity.umd.js",
+  "unpkg": "./dist/trame_color_opacity.umd.js",
+  "module": "./dist/trame_color_opacity.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/trame_color_opacity.mjs",
+      "require": "./dist/trame_color_opacity.umd.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite build --emptyOutDir --watch ",
+    "build": "run-p type-check build-only",
+    "build-only": "vite build --emptyOutDir",
+    "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
+    "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx,.cjs,.mjs --fix --ignore-path .gitignore --ignore-pattern public",
+    "semantic-release": "semantic-release"
+  },
+  "dependencies": {
+    "@colormap/core": "^0.2.0"
+  },
+  "peerDependencies": {
+    "vue": ">=3.5.0"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.14.1",
+    "@tsconfig/node18": "^18.2.4",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^13",
+    "@vue/tsconfig": "^0.8.1",
+    "eslint": "^9.38.0",
+    "eslint-plugin-vue": "^9",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.6.2",
+    "semantic-release": "^25.0.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12",
+    "vue": "^3.5.0",
+    "vue-tsc": "^3.1.2"
+  },
+  "files": [
+    "dist/*",
+    "src/*",
+    "*.json",
+    "*.js"
+  ]
+}
