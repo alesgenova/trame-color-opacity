@@ -1,5 +1,6 @@
 import numpy as np
-
+import vtkmodules.util.numpy_support as np_s
+import vtkmodules.vtkRenderingVolumeOpenGL2  # noqa - this is required
 from vtkmodules.vtkCommonDataModel import vtkImageData
 from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
 from vtkmodules.vtkInteractionWidgets import vtkOrientationMarkerWidget
@@ -12,8 +13,6 @@ from vtkmodules.vtkRenderingCore import (
     vtkVolumeProperty,
 )
 from vtkmodules.vtkRenderingVolume import vtkGPUVolumeRayCastMapper
-import vtkmodules.util.numpy_support as np_s
-import vtkmodules.vtkRenderingVolumeOpenGL2  # noqa - this is required
 
 
 class VolumeView:
