@@ -3,8 +3,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from trame.decorators import TrameApp, change
-from trame.app import get_server
+from trame.decorators import change
+from trame.app import TrameApp
 from trame.assets.remote import download_file_from_google_drive
 from trame.ui.vuetify3 import SinglePageLayout
 from trame.widgets import vtk as vtk_widgets, html, client, vuetify3 as vuetify
@@ -28,10 +28,10 @@ COLORMAP_OPTIONS = list(COLORMAPS.keys())
 
 SHAPER_OPTIONS = ["opacity", "histograms", "full"]
 
-@TrameApp()
-class VolumeApp:
+
+class VolumeApp(TrameApp):
     def __init__(self, image_data, server=None):
-        self._server = get_server(server, client_type="vue3")
+        super().__init__(server, client_type="vue3")
 
         self.state.x_range = [int(np.min(image_data)), int(np.max(image_data))]
         hist, bins = np.histogram(image_data, bins=251)
@@ -59,18 +59,6 @@ class VolumeApp:
 
         self._build_ui()
 
-    @property
-    def server(self):
-        return self._server
-
-    @property
-    def state(self):
-        return self.server.state
-
-    @property
-    def ctrl(self):
-        return self.server.controller
-    
     @staticmethod
     def make_linear_nodes(values, range):
         span = range[1] - range[0]
