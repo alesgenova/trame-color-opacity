@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import {
-  defineModel,
-  withDefaults,
-} from "vue";
+import { defineModel, withDefaults } from "vue";
 
-import { type ColorNode, type OpacityNode, type RGBAColor, type Vector2D } from '@/types'
+import {
+  type ColorNode,
+  type OpacityNode,
+  type RGBAColor,
+  type Vector2D,
+} from "@/types";
 import NodeScaler from "@/components/internal/NodeScaler.vue";
 import ViewportContainer from "@/components/internal/ViewportContainer.vue";
 import BackgroundShaper from "./internal/BackgroundShaper.vue";
@@ -41,7 +43,7 @@ type Events = {
   opacityNodeRemoved: [index: number];
 };
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   backgroundShape: "opacity",
   showHistograms: false,
   histogramsColor: () => [0, 0, 0, 0.25],
@@ -62,45 +64,47 @@ const opacityNodes = defineModel<OpacityNode[]>("opacityNodes", {
   required: true,
 });
 
-function onOpacityNodeModified([index, node]: [number, ColorNode | OpacityNode]) {
+function onOpacityNodeModified([index, node]: [
+  number,
+  ColorNode | OpacityNode,
+]) {
   if (isOpacityNode(node)) {
-    emit('opacityNodeModified', [index, node]);
+    emit("opacityNodeModified", [index, node]);
   }
 }
 
 function onOpacityNodeAdded([index, node]: [number, ColorNode | OpacityNode]) {
   if (isOpacityNode(node)) {
-    emit('opacityNodeAdded', [index, node]);
+    emit("opacityNodeAdded", [index, node]);
   }
 }
 
 function onOpacityNodeRemoved(index: number) {
   console.log("onOpacityNodeRemoved", index);
-  emit('opacityNodeRemoved', index);
+  emit("opacityNodeRemoved", index);
 }
 
 function onColorNodeModified([index, node]: [number, ColorNode | OpacityNode]) {
   if (isColorNode(node)) {
-    emit('colorNodeModified', [index, node]);
+    emit("colorNodeModified", [index, node]);
   }
 }
 
 function onColorNodeAdded([index, node]: [number, ColorNode | OpacityNode]) {
   if (isColorNode(node)) {
-    emit('colorNodeAdded', [index, node]);
+    emit("colorNodeAdded", [index, node]);
   }
 }
 
 function onColorNodeRemoved(index: number) {
-  emit('colorNodeRemoved', index);
+  emit("colorNodeRemoved", index);
 }
-
 </script>
 
 <template>
   <div class="color-opacity-editor-root-container" :style="style">
     <NodeScaler
-      v-model:nodes="histograms"
+      :nodes="histograms"
       :xRange="scalarRange"
       :yRange="histogramsRange"
       v-slot="{ scaledNodes: scaledHistograms }"
@@ -133,21 +137,60 @@ function onColorNodeRemoved(index: number) {
             scaledNodeRemoved: scaledOpacityNodeRemoved,
           }"
         >
-          <ViewportContainer v-slot="{ viewportSize }" class="color-opacity-editor-opacity-container">
-            <BackgroundShaper :backgroundShape :opacityNodes="scaledOpacityNodes" :histograms="scaledHistograms" v-slot="{ shape }">
-              <NodeMerger v-if="backgroundOpacity" :colorNodes="scaledColorNodes" :opacityNodes="scaledOpacityNodes" v-slot="{ colorOpacityNodes }">
-                <BackgroundView :shape :size="viewportSize" :padding="viewportPadding" :nodes="colorOpacityNodes"></BackgroundView>
+          <ViewportContainer
+            v-slot="{ viewportSize }"
+            class="color-opacity-editor-opacity-container"
+          >
+            <BackgroundShaper
+              :backgroundShape
+              :opacityNodes="scaledOpacityNodes"
+              :histograms="scaledHistograms"
+              v-slot="{ shape }"
+            >
+              <NodeMerger
+                v-if="backgroundOpacity"
+                :colorNodes="scaledColorNodes"
+                :opacityNodes="scaledOpacityNodes"
+                v-slot="{ colorOpacityNodes }"
+              >
+                <BackgroundView
+                  :shape
+                  :size="viewportSize"
+                  :padding="viewportPadding"
+                  :nodes="colorOpacityNodes"
+                ></BackgroundView>
               </NodeMerger>
-              <BackgroundView v-else :shape :size="viewportSize" :padding="viewportPadding" :nodes="scaledColorNodes"></BackgroundView>
+              <BackgroundView
+                v-else
+                :shape
+                :size="viewportSize"
+                :padding="viewportPadding"
+                :nodes="scaledColorNodes"
+              ></BackgroundView>
             </BackgroundShaper>
 
-            <BackgroundShaperHistograms v-if="showHistograms" :nodes="scaledHistograms" v-slot="{ shape }">
-              <BackgroundView :shape :size="viewportSize" :padding="viewportPadding" :nodes="[[0, histogramsColor]]" class="color-opacity-editor-canvas"></BackgroundView>
+            <BackgroundShaperHistograms
+              v-if="showHistograms"
+              :nodes="scaledHistograms"
+              v-slot="{ shape }"
+            >
+              <BackgroundView
+                :shape
+                :size="viewportSize"
+                :padding="viewportPadding"
+                :nodes="[[0, histogramsColor]]"
+                class="color-opacity-editor-canvas"
+              ></BackgroundView>
             </BackgroundShaperHistograms>
 
             <ControlsView
-              :size="viewportSize" :padding="viewportPadding" showLine
-              :radius="handleRadius" :lineWidth="lineWidth" :color="handleColor" :borderColor="handleBorderColor"
+              :size="viewportSize"
+              :padding="viewportPadding"
+              showLine
+              :radius="handleRadius"
+              :lineWidth="lineWidth"
+              :color="handleColor"
+              :borderColor="handleBorderColor"
               :nodes="scaledOpacityNodes"
               @update:nodes="scaledOpacityNodesUpdated"
               @nodeModified="scaledOpacityNodeModified"
@@ -156,9 +199,17 @@ function onColorNodeRemoved(index: number) {
             ></ControlsView>
           </ViewportContainer>
 
-          <ViewportContainer v-slot="{ viewportSize }" class="color-opacity-editor-color-container">
+          <ViewportContainer
+            v-slot="{ viewportSize }"
+            class="color-opacity-editor-color-container"
+          >
             <BackgroundShaperFull v-slot="{ shape }">
-              <BackgroundView :shape :size="viewportSize" :padding="viewportPadding" :nodes="scaledColorNodes"></BackgroundView>
+              <BackgroundView
+                :shape
+                :size="viewportSize"
+                :padding="viewportPadding"
+                :nodes="scaledColorNodes"
+              ></BackgroundView>
             </BackgroundShaperFull>
             <NodeFlattener
               :nodes="scaledColorNodes"
@@ -166,17 +217,23 @@ function onColorNodeRemoved(index: number) {
               @nodeModified="scaledColorNodeModified"
               @nodeAdded="scaledColorNodeAdded"
               @nodeRemoved="scaledColorNodeRemoved"
-              :slotPropsNames="{flattenedNodes: 'flattenedColorNodes'}"
+              :slotPropsNames="{ flattenedNodes: 'flattenedColorNodes' }"
               v-slot="{
                 flattenedNodes: flattenedColorNodes,
                 flattenedNodesUpdated: flattenedColorNodesUpdated,
                 flattenedNodeModified: flattenedColorNodeModified,
                 flattenedNodeAdded: flattenedColorNodeAdded,
                 flattenedNodeRemoved: flattenedColorNodeRemoved,
-              }">
+              }"
+            >
               <ControlsView
-                :size="viewportSize" :padding="[viewportPadding[0], 0]" :lineWidth="0"
-                :radius="handleRadius" :color="handleColor" :borderColor="handleBorderColor" :showLine="false"
+                :size="viewportSize"
+                :padding="[viewportPadding[0], 0]"
+                :lineWidth="0"
+                :radius="handleRadius"
+                :color="handleColor"
+                :borderColor="handleBorderColor"
+                :showLine="false"
                 :nodes="flattenedColorNodes"
                 @update:nodes="flattenedColorNodesUpdated"
                 @nodeModified="flattenedColorNodeModified"

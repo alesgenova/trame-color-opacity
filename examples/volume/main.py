@@ -12,7 +12,8 @@ from trame.widgets import color_opacity, html
 from trame.widgets import vtk as vtk_widgets
 from trame.widgets import vuetify3 as v3
 
-# import matplotlib.cm as cm; import numpy as np; [[float(c) for c in cm.viridis(x)[:3]] for x in np.linspace(0, 1, 16)];
+# import matplotlib.cm as cm; import numpy as np;
+# [[float(c) for c in cm.viridis(x)[:3]] for x in np.linspace(0, 1, 16)];
 COLORMAPS = {
     "RBG": [[1, 0, 0], [0, 0, 1], [0, 1, 0]],
     "WB": [[1, 1, 1], [0, 0, 0]],
@@ -118,10 +119,10 @@ class VolumeApp(TrameApp):
         super().__init__(server, client_type="vue3")
 
         self.state.x_range = [int(np.min(image_data)), int(np.max(image_data))]
-        hist, bins = np.histogram(image_data, bins=251)
-        hist = np.log10(hist)
-        self.state.hist_y_range = [0, float(np.max(hist))]
-        self.state.histograms = [[float(bin), float(count)] for count, bin in zip(hist, bins)]
+        histograms, bins = np.histogram(image_data, bins=251)
+        histograms = np.log10(histograms)
+        self.state.hist_y_range = [0, float(np.max(histograms))]
+        self.state.histograms = [[float(bin), float(count)] for count, bin in zip(histograms, bins)]
         self.state.opacities = self.make_linear_nodes([0, 1], self.state.x_range)
 
         self.volume_view = VolumeView()

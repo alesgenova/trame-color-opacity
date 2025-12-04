@@ -7,11 +7,13 @@ __all__ = [
     "ColorOpacityEditor",
 ]
 
+
 class HtmlElement(AbstractElement):
     def __init__(self, _elem_name, children=None, **kwargs):
         super().__init__(_elem_name, children, **kwargs)
         if self.server:
             self.server.enable_module(module)
+
 
 def add_named_models(el: HtmlElement, named_models: Sequence[str | tuple[str, str]]):
     for named_model in named_models:
@@ -25,6 +27,7 @@ def add_named_models(el: HtmlElement, named_models: Sequence[str | tuple[str, st
         # TODO: trame bug would ignore js_name if there is an underscore in python_name
         el._attr_names.append((f"v_model_{python_name}", f"v-model:{js_name}"))
         el._event_names.append((f"update_{python_name}", f"update:{js_name}"))
+
 
 class ColorOpacityEditor(HtmlElement):
     def __init__(
@@ -61,12 +64,9 @@ class ColorOpacityEditor(HtmlElement):
             ("opacity_node_modified", "opacityNodeModified"),
             ("opacity_node_added", "opacityNodeAdded"),
             ("opacity_node_removed", "opacityNodeRemoved"),
-
             ("color_node_modified", "colorNodeModified"),
             ("color_node_added", "colorNodeAdded"),
             ("color_node_removed", "colorNodeRemoved"),
         ]
 
         add_named_models(self, named_models)
-
-

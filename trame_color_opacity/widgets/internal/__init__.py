@@ -1,5 +1,6 @@
 from trame_color_opacity.widgets import HtmlElement, add_named_models
 
+
 class ViewportContainer(HtmlElement):
     def __init__(
         self,
@@ -18,6 +19,7 @@ class ViewportContainer(HtmlElement):
             "viewportSize",
         ]
         self._attributes["slot"] = f'v-slot="{{ {", ".join(slot_props)} }}"'
+
 
 class NodeMerger(HtmlElement):
     def __init__(
@@ -41,6 +43,7 @@ class NodeMerger(HtmlElement):
         ]
         self._attributes["slot"] = f'v-slot="{{ {", ".join(slot_props)} }}"'
 
+
 class BackgroundView(HtmlElement):
     def __init__(
         self,
@@ -59,6 +62,7 @@ class BackgroundView(HtmlElement):
         ]
 
         self._event_names += []
+
 
 class ControlsView(HtmlElement):
     def __init__(
@@ -90,6 +94,7 @@ class ControlsView(HtmlElement):
 
         add_named_models(self, named_models)
 
+
 class NodeFlattener(HtmlElement):
     FLATTENED_NODES_SLOT_PROP = "flattenedNodes"
 
@@ -103,8 +108,7 @@ class NodeFlattener(HtmlElement):
             **kwargs,
         )
 
-        self._attr_names += [
-        ]
+        self._attr_names += []
 
         self._event_names += [
             ("node_modified", "nodeModified"),
@@ -126,7 +130,9 @@ class NodeFlattener(HtmlElement):
             "flattenedNodeRemoved": f"{flattened_nodes_slot_prop}NodeRemoved",
         }
 
-        self._attributes["slot"] = f'v-slot="{{ { ", ".join(map(lambda it: f"{it[0]}:{it[1]}", slot_props.items())) } }}"'
+        self._attributes["slot"] = (
+            f'v-slot="{{ { ", ".join(map(lambda it: f"{it[0]}:{it[1]}", slot_props.items())) } }}"'
+        )
 
 
 class BaseShaper(HtmlElement):
@@ -145,6 +151,7 @@ class BaseShaper(HtmlElement):
         ]
         self._attributes["slot"] = f'v-slot="{{ {", ".join(slot_props)} }}"'
 
+
 class BackgroundShaperFull(BaseShaper):
     def __init__(
         self,
@@ -154,6 +161,7 @@ class BackgroundShaperFull(BaseShaper):
             "trame-coe-background-shaper-full",
             **kwargs,
         )
+
 
 class BackgroundShaperOpacity(BaseShaper):
     def __init__(
@@ -169,6 +177,7 @@ class BackgroundShaperOpacity(BaseShaper):
             "nodes",
         ]
 
+
 class BackgroundShaperHistograms(BaseShaper):
     def __init__(
         self,
@@ -182,6 +191,7 @@ class BackgroundShaperHistograms(BaseShaper):
         self._attr_names += [
             "nodes",
         ]
+
 
 class NodeScaler(HtmlElement):
     SCALED_NODES_SLOT_PROP = "scaledNodes"
@@ -221,4 +231,6 @@ class NodeScaler(HtmlElement):
             "scaledNodeRemoved": f"{scaled_nodes_slot_prop}NodeRemoved",
         }
 
-        self._attributes["slot"] = f'v-slot="{{ { ", ".join(map(lambda it: f"{it[0]}:{it[1]}", slot_props.items())) } }}"'
+        self._attributes["slot"] = (
+            f'v-slot="{{ { ", ".join(map(lambda it: f"{it[0]}:{it[1]}", slot_props.items())) } }}"'
+        )

@@ -13,7 +13,8 @@ from trame_color_opacity.widgets import internal as color_opacity_internal_widge
 
 from volume_view import VolumeView
 
-# import matplotlib.cm as cm; import numpy as np; [[float(c) for c in cm.viridis(x)[:3]] for x in np.linspace(0, 1, 16)];
+# import matplotlib.cm as cm; import numpy as np;
+# [[float(c) for c in cm.viridis(x)[:3]] for x in np.linspace(0, 1, 16)];
 COLORMAPS = {
     "RBG": [[1, 0, 0], [0, 0, 1], [0, 1, 0]],
     "WB": [[1, 1, 1], [0, 0, 0]],
@@ -117,10 +118,10 @@ class VolumeApp(TrameApp):
         super().__init__(server, client_type="vue3")
 
         self.state.x_range = [int(np.min(image_data)), int(np.max(image_data))]
-        hist, bins = np.histogram(image_data, bins=251)
-        hist = np.log10(hist)
-        self.state.hist_y_range = [0, float(np.max(hist))]
-        self.state.histograms = [[float(bin), float(count)] for count, bin in zip(hist, bins)]
+        histograms, bins = np.histogram(image_data, bins=251)
+        histograms = np.log10(histograms)
+        self.state.hist_y_range = [0, float(np.max(histograms))]
+        self.state.histograms = [[float(bin), float(count)] for count, bin in zip(histograms, bins)]
 
         self.volume_view = VolumeView()
         self.volume_view.volume_property.SetShade(1)  # enable shadows
@@ -133,12 +134,10 @@ class VolumeApp(TrameApp):
 
         self.state.colormap_name = "RBG"
 
-        self.state.opacities = self.make_linear_nodes(
-            [0, 1], self.state.x_range
-        )
+        self.state.opacities = self.make_linear_nodes([0, 1], self.state.x_range)
 
         self._build_ui()
-    
+
     @staticmethod
     def make_linear_nodes(values, range):
         span = range[1] - range[0]
@@ -153,10 +152,7 @@ class VolumeApp(TrameApp):
 
     @change("colormap_name")
     def on_colormap_name_changed(self, colormap_name, **kwargs):
-        self.state.colors = self.make_linear_nodes(
-            COLORMAPS[colormap_name],
-            self.state.x_range
-        )
+        self.state.colors = self.make_linear_nodes(COLORMAPS[colormap_name], self.state.x_range)
 
     @change("opacities")
     def on_opacities_changed(self, opacities, **kwargs):
@@ -207,18 +203,21 @@ class VolumeApp(TrameApp):
 
             with layout.content:
                 with html.Div(style="display: flex; gap: 1rem; padding: 1rem;"):
-                    vuetify.VSelect(v_model=("colormap_name",), items=("colormap_options", COLORMAP_OPTIONS), label="Colormap", density="compact")
+                    vuetify.VSelect(
+                        v_model=("colormap_name",),
+                        items=("colormap_options", COLORMAP_OPTIONS),
+                        label="Colormap",
+                        density="compact",
+                    )
 
-                with html.Div(
-                    style="width: 100%; padding: 0.5rem;"
-                ):
+                with html.Div(style="width: 100%; padding: 0.5rem;"):
                     with color_opacity_internal_widgets.NodeScaler(
                         v_model_nodes=("opacities",),
                         node_modified=(self.on_opacity_node_modified, "$event"),
                         node_added=(self.on_opacity_node_added, "$event"),
                         node_removed=(self.on_opacity_node_removed, "[$event]"),
                         scaled_nodes_slot_prop="scaledOpacities",
-                        x_range=("x_range",)
+                        x_range=("x_range",),
                     ):
                         with color_opacity_internal_widgets.NodeScaler(
                             v_model_nodes=("colors",),
@@ -226,17 +225,25 @@ class VolumeApp(TrameApp):
                             node_added=(self.on_color_node_added, "$event"),
                             node_removed=(self.on_color_node_removed, "[$event]"),
                             scaled_nodes_slot_prop="scaledColors",
-                            x_range=("x_range",)
+                            x_range=("x_range",),
                         ):
                             with color_opacity_internal_widgets.NodeScaler(
-                                nodes=("histograms",), scaled_nodes_slot_prop="scaledHistograms",
-                                x_range=("x_range",), y_range=("hist_y_range",),
+                                nodes=("histograms",),
+                                scaled_nodes_slot_prop="scaledHistograms",
+                                x_range=("x_range",),
+                                y_range=("hist_y_range",),
                             ):
-                                with color_opacity_internal_widgets.ViewportContainer(style="width: 100%; height: 20rem; position: relative;"):
-                                # with html.Div(style="width: 100%; height: 40rem; position: relative;"):
-                                    # with color_opacity_internal_widgets.BackgroundShaperHistograms(nodes=("scaledHistograms",)):
-                                    with color_opacity_internal_widgets.BackgroundShaperOpacity(nodes=("scaledOpacities",)):
-                                    # with color_opacity_internal_widgets.BackgroundShaperFull():
+                                with color_opacity_internal_widgets.ViewportContainer(
+                                    style="width: 100%; height: 20rem; position: relative;"
+                                ):
+                                    # with html.Div(style="width: 100%; height: 40rem; position: relative;"):
+                                    # with color_opacity_internal_widgets.BackgroundShaperHistograms(
+                                    #   nodes=("scaledHistograms",)
+                                    # ):
+                                    with color_opacity_internal_widgets.BackgroundShaperOpacity(
+                                        nodes=("scaledOpacities",)
+                                    ):
+                                        # with color_opacity_internal_widgets.BackgroundShaperFull():
                                         with color_opacity_internal_widgets.NodeMerger(
                                             color_nodes=("scaledColors",),
                                             opacity_nodes=("scaledOpacities",),
@@ -247,9 +254,11 @@ class VolumeApp(TrameApp):
                                                 padding=("padding",),
                                                 nodes=("colorOpacityNodes",),
                                                 shape=("shape",),
-                                        )
-                                    
-                                    with color_opacity_internal_widgets.BackgroundShaperHistograms(nodes=("scaledHistograms",)):
+                                            )
+
+                                    with color_opacity_internal_widgets.BackgroundShaperHistograms(
+                                        nodes=("scaledHistograms",)
+                                    ):
                                         color_opacity_internal_widgets.BackgroundView(
                                             style="position: absolute; top: 0; left: 0;",
                                             size=("viewportSize",),
@@ -272,7 +281,9 @@ class VolumeApp(TrameApp):
                                         line_width=2,
                                     )
 
-                                with color_opacity_internal_widgets.ViewportContainer(style="width: 100%; height: 2rem; margin-top: 1rem; position: relative;"):
+                                with color_opacity_internal_widgets.ViewportContainer(
+                                    style="width: 100%; height: 2rem; margin-top: 1rem; position: relative;"
+                                ):
                                     with color_opacity_internal_widgets.BackgroundShaperFull():
                                         color_opacity_internal_widgets.BackgroundView(
                                             size=("viewportSize",),
@@ -288,7 +299,6 @@ class VolumeApp(TrameApp):
                                         node_added="scaledColorsNodeAdded",
                                         node_removed="scaledColorsNodeRemoved",
                                         flattened_nodes_slot_prop="flattenedColors",
-
                                     ):
                                         color_opacity_internal_widgets.ControlsView(
                                             style="position: absolute; top: 0; left: 0;",
@@ -303,19 +313,18 @@ class VolumeApp(TrameApp):
                                             show_line=False,
                                         )
 
-                with html.Div(
-                    style="width: 100%; flex-grow: 1;"
-                ):
+                with html.Div(style="width: 100%; flex-grow: 1;"):
                     self.vtk_view = vtk_widgets.VtkRemoteView(
                         self.volume_view.render_window, interactive_ratio=1
                     )
 
+
 def main():
-    data_path = Path('PtCu_NanoParticles_subsampled_doi_10.1038_sdata.2016.41.tiff')
-    drive_id = '1hXOQjtdZbFXJGlBnd07H6ATn8nB-oydM'
+    data_path = Path("PtCu_NanoParticles_subsampled_doi_10.1038_sdata.2016.41.tiff")
+    drive_id = "1hXOQjtdZbFXJGlBnd07H6ATn8nB-oydM"
 
     if not data_path.exists():
-        print('Downloading dataset from Google Drive...')
+        print("Downloading dataset from Google Drive...")
         download_file_from_google_drive(drive_id, data_path)
 
     # Load the 3D tiff
