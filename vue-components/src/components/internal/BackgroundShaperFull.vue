@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Vector2D } from "@/types";
+import type { Vector2D } from '@/types'
 
 defineSlots<{
-  default(props: { shape: Vector2D[] }): void;
-}>();
+  default(props: { shape: Vector2D[] }): void
+}>()
 </script>
 
 <template>

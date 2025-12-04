@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import { defineProps, useTemplateRef, onMounted, computed, watch } from "vue";
-import type { ColorNode, ColorOpacityNode } from "@/types";
-import type { Point } from "@/types";
-import type { Vector2D } from "@/types";
-import { drawCanvasBackground } from "@/utils/canvas";
+import { defineProps, useTemplateRef, onMounted, computed, watch } from 'vue'
+import type { ColorNode, ColorOpacityNode } from '@/types'
+import type { Point } from '@/types'
+import type { Vector2D } from '@/types'
+import { drawCanvasBackground } from '@/utils/canvas'
 
 const props = defineProps<{
-  nodes: ColorOpacityNode[] | ColorNode[];
-  shape: Point[];
-  size: Vector2D;
-  padding: Vector2D;
-}>();
+  nodes: ColorOpacityNode[] | ColorNode[]
+  shape: Point[]
+  size: Vector2D
+  padding: Vector2D
+}>()
 
-const canvas = useTemplateRef<HTMLCanvasElement>("background-canvas");
+const canvas = useTemplateRef<HTMLCanvasElement>('background-canvas')
 
 const contentSize = computed<Vector2D>(() => [
   Math.max(props.size[0] - 2 * props.padding[0], 0),
   Math.max(props.size[1] - 2 * props.padding[1], 0),
-]);
+])
 
 watch(
   () => [canvas, props.size, props.padding, props.shape, props.nodes],
   () => {
     if (!canvas.value) {
-      return;
+      return
     }
 
-    const context = canvas.value.getContext("2d");
+    const context = canvas.value.getContext('2d')
 
     if (!context) {
-      return;
+      return
     }
 
-    canvas.value.width = props.size[0];
-    canvas.value.height = props.size[1];
+    canvas.value.width = props.size[0]
+    canvas.value.height = props.size[1]
 
     drawCanvasBackground(
       context,
@@ -42,23 +42,23 @@ watch(
       contentSize.value,
       props.shape,
       props.nodes,
-    );
+    )
   },
-);
+)
 
 onMounted(() => {
   if (!canvas.value) {
-    return;
+    return
   }
 
-  const context = canvas.value.getContext("2d");
+  const context = canvas.value.getContext('2d')
 
   if (!context) {
-    return;
+    return
   }
 
-  canvas.value.width = props.size[0];
-  canvas.value.height = props.size[1];
+  canvas.value.width = props.size[0]
+  canvas.value.height = props.size[1]
 
   drawCanvasBackground(
     context,
@@ -67,8 +67,8 @@ onMounted(() => {
     contentSize.value,
     props.shape,
     props.nodes,
-  );
-});
+  )
+})
 </script>
 
 <template>

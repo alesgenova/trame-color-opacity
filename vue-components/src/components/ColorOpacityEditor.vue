@@ -1,50 +1,45 @@
 <script setup lang="ts">
-import { defineModel, withDefaults } from "vue";
+import { defineModel, withDefaults } from 'vue'
 
-import {
-  type ColorNode,
-  type OpacityNode,
-  type RGBAColor,
-  type Vector2D,
-} from "@/types";
-import NodeScaler from "@/components/internal/NodeScaler.vue";
-import ViewportContainer from "@/components/internal/ViewportContainer.vue";
-import BackgroundShaper from "./internal/BackgroundShaper.vue";
-import BackgroundView from "./internal/BackgroundView.vue";
-import ControlsView from "./internal/ControlsView.vue";
-import NodeMerger from "./internal/NodeMerger.vue";
-import BackgroundShaperFull from "./internal/BackgroundShaperFull.vue";
-import NodeFlattener from "./internal/NodeFlattener.vue";
-import BackgroundShaperHistograms from "./internal/BackgroundShaperHistograms.vue";
-import { isColorNode, isOpacityNode } from "@/utils/nodes";
+import { type ColorNode, type OpacityNode, type RGBAColor, type Vector2D } from '@/types'
+import NodeScaler from '@/components/internal/NodeScaler.vue'
+import ViewportContainer from '@/components/internal/ViewportContainer.vue'
+import BackgroundShaper from './internal/BackgroundShaper.vue'
+import BackgroundView from './internal/BackgroundView.vue'
+import ControlsView from './internal/ControlsView.vue'
+import NodeMerger from './internal/NodeMerger.vue'
+import BackgroundShaperFull from './internal/BackgroundShaperFull.vue'
+import NodeFlattener from './internal/NodeFlattener.vue'
+import BackgroundShaperHistograms from './internal/BackgroundShaperHistograms.vue'
+import { isColorNode, isOpacityNode } from '@/utils/nodes'
 
 interface Props {
-  scalarRange: Vector2D;
-  histogramsRange: Vector2D;
-  backgroundShape: "full" | "opacity" | "histograms";
-  backgroundOpacity: boolean;
-  histograms: Vector2D[];
-  showHistograms: boolean;
-  style: string;
-  viewportPadding: Vector2D;
-  histogramsColor: RGBAColor;
-  handleColor: RGBAColor;
-  handleBorderColor: RGBAColor;
-  handleRadius: number;
-  lineWidth: number;
+  scalarRange: Vector2D
+  histogramsRange: Vector2D
+  backgroundShape: 'full' | 'opacity' | 'histograms'
+  backgroundOpacity: boolean
+  histograms: Vector2D[]
+  showHistograms: boolean
+  style: string
+  viewportPadding: Vector2D
+  histogramsColor: RGBAColor
+  handleColor: RGBAColor
+  handleBorderColor: RGBAColor
+  handleRadius: number
+  lineWidth: number
 }
 
 type Events = {
-  colorNodeModified: [[index: number, node: ColorNode]];
-  colorNodeAdded: [[index: number, node: ColorNode]];
-  colorNodeRemoved: [index: number];
-  opacityNodeModified: [[index: number, node: OpacityNode]];
-  opacityNodeAdded: [[index: number, node: OpacityNode]];
-  opacityNodeRemoved: [index: number];
-};
+  colorNodeModified: [[index: number, node: ColorNode]]
+  colorNodeAdded: [[index: number, node: ColorNode]]
+  colorNodeRemoved: [index: number]
+  opacityNodeModified: [[index: number, node: OpacityNode]]
+  opacityNodeAdded: [[index: number, node: OpacityNode]]
+  opacityNodeRemoved: [index: number]
+}
 
 withDefaults(defineProps<Props>(), {
-  backgroundShape: "opacity",
+  backgroundShape: 'opacity',
   showHistograms: false,
   histogramsColor: () => [0, 0, 0, 0.25],
   viewportPadding: () => [8, 8],
@@ -52,52 +47,49 @@ withDefaults(defineProps<Props>(), {
   handleBorderColor: () => [0.75, 0.75, 0.75, 1],
   handleRadius: 7,
   lineWidth: 2,
-});
+})
 
-const emit = defineEmits<Events>();
+const emit = defineEmits<Events>()
 
-const colorNodes = defineModel<ColorNode[]>("colorNodes", {
+const colorNodes = defineModel<ColorNode[]>('colorNodes', {
   required: true,
-});
+})
 
-const opacityNodes = defineModel<OpacityNode[]>("opacityNodes", {
+const opacityNodes = defineModel<OpacityNode[]>('opacityNodes', {
   required: true,
-});
+})
 
-function onOpacityNodeModified([index, node]: [
-  number,
-  ColorNode | OpacityNode,
-]) {
+function onOpacityNodeModified([index, node]: [number, ColorNode | OpacityNode]) {
   if (isOpacityNode(node)) {
-    emit("opacityNodeModified", [index, node]);
+    emit('opacityNodeModified', [index, node])
   }
 }
 
 function onOpacityNodeAdded([index, node]: [number, ColorNode | OpacityNode]) {
   if (isOpacityNode(node)) {
-    emit("opacityNodeAdded", [index, node]);
+    emit('opacityNodeAdded', [index, node])
   }
 }
 
 function onOpacityNodeRemoved(index: number) {
-  console.log("onOpacityNodeRemoved", index);
-  emit("opacityNodeRemoved", index);
+  console.log('onOpacityNodeRemoved', index)
+  emit('opacityNodeRemoved', index)
 }
 
 function onColorNodeModified([index, node]: [number, ColorNode | OpacityNode]) {
   if (isColorNode(node)) {
-    emit("colorNodeModified", [index, node]);
+    emit('colorNodeModified', [index, node])
   }
 }
 
 function onColorNodeAdded([index, node]: [number, ColorNode | OpacityNode]) {
   if (isColorNode(node)) {
-    emit("colorNodeAdded", [index, node]);
+    emit('colorNodeAdded', [index, node])
   }
 }
 
 function onColorNodeRemoved(index: number) {
-  emit("colorNodeRemoved", index);
+  emit('colorNodeRemoved', index)
 }
 </script>
 
@@ -199,10 +191,7 @@ function onColorNodeRemoved(index: number) {
             ></ControlsView>
           </ViewportContainer>
 
-          <ViewportContainer
-            v-slot="{ viewportSize }"
-            class="color-opacity-editor-color-container"
-          >
+          <ViewportContainer v-slot="{ viewportSize }" class="color-opacity-editor-color-container">
             <BackgroundShaperFull v-slot="{ shape }">
               <BackgroundView
                 :shape
