@@ -1,4 +1,4 @@
-# `trame-color-opacity`
+# `trame-color-opacity-editor`
 
 ![demo_image](demo.png)
 

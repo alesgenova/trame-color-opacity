@@ -1,4 +1,4 @@
-from trame_color_opacity.widgets import HtmlElement, add_named_models
+from trame_color_opacity_editor.widgets import HtmlElement, add_named_models
 
 
 class ViewportContainer(HtmlElement):

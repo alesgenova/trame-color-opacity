@@ -8,7 +8,7 @@ from trame.decorators import change
 from trame.ui.vuetify3 import VAppLayout
 from volume_view import VolumeView
 
-from trame.widgets import color_opacity, html
+from trame.widgets import color_opacity_editor, html
 from trame.widgets import vtk as vtk_widgets
 from trame.widgets import vuetify3 as v3
 
@@ -221,7 +221,7 @@ class VolumeApp(TrameApp):
                         density="compact",
                     )
 
-                color_opacity.ColorOpacityEditor(
+                color_opacity_editor.ColorOpacityEditor(
                     classes="pa-2 h-25",
                     v_model_colorNodes="colors",
                     v_model_opacityNodes=("opacities",),

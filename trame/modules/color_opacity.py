@@ -1,1 +1,1 @@
-from trame_color_opacity.module import *  # noqa: F403
+from trame_color_opacity_editor.module import *  # noqa: F403

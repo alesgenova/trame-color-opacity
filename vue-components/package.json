@@ -1,14 +1,14 @@
 {
-  "name": "vue-trame_color_opacity",
+  "name": "vue-trame_color_opacity_editor",
   "private": true,
   "version": "0.0.0",
-  "main": "./dist/trame_color_opacity.umd.js",
-  "unpkg": "./dist/trame_color_opacity.umd.js",
-  "module": "./dist/trame_color_opacity.mjs",
+  "main": "./dist/trame_color_opacity_editor.umd.js",
+  "unpkg": "./dist/trame_color_opacity_editor.umd.js",
+  "module": "./dist/trame_color_opacity_editor.mjs",
   "exports": {
     ".": {
-      "import": "./dist/trame_color_opacity.mjs",
-      "require": "./dist/trame_color_opacity.umd.js"
+      "import": "./dist/trame_color_opacity_editor.mjs",
+      "require": "./dist/trame_color_opacity_editor.umd.js"
     }
   },
   "scripts": {

@@ -9,9 +9,9 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: "./src/main.js",
-      name: "trame_color_opacity",
+      name: "trame_color_opacity_editor",
       formats: ["umd"],
-      fileName: "trame_color_opacity",
+      fileName: "trame_color_opacity_editor",
     },
     rollupOptions: {
       external: ["vue"],
@@ -21,7 +21,7 @@ export default defineConfig({
         },
       },
     },
-    outDir: "../trame_color_opacity/module/serve",
+    outDir: "../trame_color_opacity_editor/module/serve",
     assetsDir: ".",
   },
   plugins: [vue()],

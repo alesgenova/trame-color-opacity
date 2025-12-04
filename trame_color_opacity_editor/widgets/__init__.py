@@ -1,7 +1,7 @@
 from typing import Sequence
 from trame_client.widgets.core import AbstractElement
 
-from trame_color_opacity import module
+from trame_color_opacity_editor import module
 
 __all__ = [
     "ColorOpacityEditor",

@@ -9,7 +9,7 @@ from trame.assets.remote import download_file_from_google_drive
 from trame.ui.vuetify3 import SinglePageLayout
 from trame.widgets import vtk as vtk_widgets, html, client, vuetify3 as vuetify
 
-from trame_color_opacity.widgets import internal as color_opacity_internal_widgets
+from trame_color_opacity_editor.widgets import internal as color_opacity_internal_widgets
 
 from volume_view import VolumeView
 

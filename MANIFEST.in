@@ -1,4 +1,4 @@
-graft trame_color_opacity/module/serve
+graft trame_color_opacity_editor/module/serve
 prune examples
 prune tests
 prune vue-components

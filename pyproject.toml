@@ -1,5 +1,5 @@
 [project]
-name = "trame-color-opacity"
+name = "trame-color-opacity-editor"
 version = "0.1.0"
 description = "A trame package implementing the Paraview/Tomviz color-opacity editor."
 authors = [
@@ -40,17 +40,17 @@ where = ["."]
 # Editable installs don't work with the namespace packages if we
 # include "trame" in this list. We must explicitly include "trame.modules"
 # and "trame.widgets" instead.
-include = ["trame.modules", "trame.widgets", "trame_color_opacity"]
+include = ["trame.modules", "trame.widgets", "trame_color_opacity_editor"]
 
 [tool.setuptools.package-data]
-trame_color_opacity = [
+trame_color_opacity_editor = [
     "**/*.py",
     "**/*.js",
     "**/*.css",
 ]
 [tool.semantic_release]
 version_variables = [
-    "trame_color_opacity/__init__.py:__version__",
+    "trame_color_opacity_editor/__init__.py:__version__",
 ]
 version_toml = [
     "pyproject.toml:project.version",
